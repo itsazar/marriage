@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion } from 'framer-motion'
+import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
 import { loveStory } from '../data/content'
 import { Reveal } from './ui/Reveal'
 import { DoodleDraw } from './decor/DoodleDraw'
@@ -11,6 +11,15 @@ export function LoveStory() {
   const [dir, setDir] = useState(1)
   const autoRef = useRef(true)
   const n = loveStory.length
+
+  // Scroll-scrubbed "journey" line that draws as the section moves through view.
+  const sectionRef = useRef<HTMLElement>(null)
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ['start 0.85', 'end 0.35'],
+  })
+  const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1])
+  const markerOffset = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
   // Gentle auto-advance until the user interacts.
   useEffect(() => {
@@ -39,8 +48,34 @@ export function LoveStory() {
   const fillWidth = `calc((100% - ${100 / n}%) * ${n > 1 ? active / (n - 1) : 0})`
 
   return (
-    <section id="story" className="section-pad relative overflow-hidden bg-sand-50">
-      <div className="container-narrow">
+    <section ref={sectionRef} id="story" className="section-pad relative overflow-hidden bg-sand-50">
+      {/* Scroll-drawn journey line meandering down the section */}
+      <div className="pointer-events-none absolute inset-0 flex justify-center" aria-hidden="true">
+        <svg
+          viewBox="0 0 200 1000"
+          preserveAspectRatio="none"
+          className="h-full w-[min(90%,900px)] opacity-[0.5]"
+        >
+          <motion.path
+            d="M100 10 C30 130 170 240 100 360 C30 480 170 600 100 720 C40 830 150 920 100 990"
+            fill="none"
+            stroke="#e4cbab"
+            strokeWidth="3"
+            strokeDasharray="1 12"
+            strokeLinecap="round"
+            style={{ pathLength }}
+          />
+        </svg>
+        {/* Little heart travelling down the path */}
+        <motion.div
+          className="absolute left-1/2 top-0 -translate-x-1/2 text-lg"
+          style={{ top: markerOffset }}
+        >
+          💜
+        </motion.div>
+      </div>
+
+      <div className="container-narrow relative">
         <Reveal className="text-center">
           <p className="eyebrow">Our Journey</p>
           <h2 className="heading-display mt-3">Our Love Story</h2>

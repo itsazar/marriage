@@ -9,6 +9,7 @@ const links = [
   { href: '#venue', label: 'Venue' },
   { href: '#gallery', label: 'Gallery' },
   { href: '#rsvp', label: 'RSVP' },
+  { href: '#guestbook', label: 'Guestbook' },
 ]
 
 export function Nav() {
@@ -33,7 +34,7 @@ export function Nav() {
     >
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
         <a href="#top" className="font-serif text-lg tracking-wide text-ink">
-          {couple.displayA[0]} <span className="text-gold">&</span> {couple.displayB[0]}
+          {couple.displayA[0]} <span className="text-[#9b51e0]">❤</span> {couple.displayB[0]}
         </a>
 
         <ul className="hidden items-center gap-8 md:flex">

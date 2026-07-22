@@ -26,6 +26,14 @@ export const events = [
     time: '7:00 PM – 10:00 PM',
     blurb: 'An evening of music, feasting and celebration under the coastal stars.',
     icon: 'sparkles',
+    // Calendar invite times: [year, month(1-12), day, hour(24h), minute]
+    start: [2026, 9, 12, 19, 0],
+    end: [2026, 9, 12, 22, 0],
+    dressCode: {
+      label: 'Festive & Glam',
+      hint: 'Jewel tones, flowy fabrics',
+      colors: ['#7b2d3a', '#c9a24b', '#0e807b'],
+    },
   },
   {
     id: 'wedding',
@@ -35,8 +43,41 @@ export const events = [
     time: '5:00 AM – 7:00 AM',
     blurb: 'The sacred vows at dawn, as the sun rises over the Bay of Bengal.',
     icon: 'rings',
+    start: [2026, 9, 13, 5, 0],
+    end: [2026, 9, 13, 7, 0],
+    dressCode: {
+      label: 'Traditional & Beach-formal',
+      hint: 'Soft pastels, breezy silks',
+      colors: ['#f6ece0', '#e07a5f', '#f2a65a'],
+    },
   },
 ]
+
+// Playful "His vs Hers" flip cards in the Meet the Couple section.
+export const coupleFacts = {
+  bride: {
+    name: 'Lavanya',
+    role: 'The Bride',
+    tagline: 'Sunshine with a stubborn streak',
+    facts: [
+      { q: 'Superpower', a: 'Winning every argument 😎' },
+      { q: 'Weakness', a: 'Filter coffee & sunsets' },
+      { q: 'Always', a: 'Right (allegedly)' },
+      { q: 'Says sorry', a: "Never — she's never wrong" },
+    ],
+  },
+  groom: {
+    name: 'Azar',
+    role: 'The Groom',
+    tagline: 'Calm, charming, hopelessly in love',
+    facts: [
+      { q: 'Superpower', a: 'Losing debates gracefully 🏆' },
+      { q: 'Weakness', a: 'Her smile (every single time)' },
+      { q: 'Always', a: 'The designated driver' },
+      { q: 'Says sorry', a: 'First — for the sake of peace' },
+    ],
+  },
+}
 
 export const loveStory = [
   {
@@ -119,7 +160,20 @@ export const venue = {
   // Directions button + embedded map both use this search query.
   mapsQuery: 'Chennai Island Beach Resort Muttukadu',
   note: 'Parking available on-site. Beachwear-friendly, but do carry a light shawl for the morning breeze.',
+  gettingThere: [
+    { icon: 'plane', title: 'By Air', detail: "Chennai Int'l Airport (MAA) — about a 40 min drive south." },
+    { icon: 'car', title: 'By Road', detail: 'Right on the ECR — roughly 30 min from the city centre.' },
+    { icon: 'parking', title: 'Parking', detail: 'Free, secure on-site parking for all our guests.' },
+    { icon: 'bed', title: 'Stay', detail: 'Resort rooms & several ECR hotels within a short drive.' },
+  ],
 }
+
+// Sample well-wishes seeded into the guestbook wall.
+export const guestbookSeed = [
+  { name: 'Priya', message: "So happy for you both! Can't wait to dance at the wedding 💃" },
+  { name: 'Karthik', message: '20 years in the making — worth every second. Congrats!' },
+  { name: 'Meera', message: 'A beach wedding at sunrise? Iconic. See you there ❤️' },
+]
 
 // Placeholder gallery. Replace `src` with your own photo URLs / imported images.
 export const gallery = [

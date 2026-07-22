@@ -10,7 +10,7 @@ export function Footer() {
         <Kolam className="mb-6" />
         <p className="font-display text-4xl">
           <span className="text-shimmer">{couple.displayA}</span>
-          <span className="mx-2 font-serif text-2xl text-sand-100">&amp;</span>
+          <span className="mx-2 text-2xl text-[#9b51e0]">❤</span>
           <span className="text-shimmer">{couple.displayB}</span>
         </p>
         <p className="mt-4 font-serif text-lg italic text-sand-100/80">

@@ -1,13 +1,23 @@
+import { useState } from 'react'
 import { couple, rsvpFormUrl, rsvpDeadline } from '../data/content'
 import { Reveal } from './ui/Reveal'
 import { Petals } from './decor/Petals'
+import { Confetti } from './decor/Confetti'
 
 export function Rsvp() {
+  const [celebrate, setCelebrate] = useState(false)
+
+  const cheer = () => {
+    setCelebrate(true)
+    window.setTimeout(() => setCelebrate(false), 4500)
+  }
+
   return (
     <section
       id="rsvp"
       className="section-pad relative overflow-hidden bg-gradient-to-br from-sunset-500 via-coral to-maroon text-sand-50"
     >
+      {celebrate && <Confetti count={110} />}
       <Petals count={10} />
       <div className="container-narrow relative text-center">
         <Reveal>
@@ -22,6 +32,7 @@ export function Rsvp() {
             href={rsvpFormUrl}
             target="_blank"
             rel="noopener noreferrer"
+            onClick={cheer}
             className="group mt-10 inline-flex items-center gap-3 rounded-full bg-sand-50 px-9 py-4 font-body text-sm font-semibold uppercase tracking-[0.2em] text-maroon shadow-xl transition-all duration-300 hover:scale-105 hover:bg-white"
           >
             Respond Now

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { AnimatePresence, motion } from 'framer-motion'
 import { countdownTarget } from '../data/content'
+import { Confetti } from './decor/Confetti'
 
 type TimeLeft = { days: number; hours: number; minutes: number; seconds: number }
 
@@ -46,6 +47,30 @@ export function Countdown() {
     const id = setInterval(() => setTime(getTimeLeft(countdownTarget)), 1000)
     return () => clearInterval(id)
   }, [])
+
+  const done = time.days === 0 && time.hours === 0 && time.minutes === 0 && time.seconds === 0
+
+  if (done) {
+    return (
+      <>
+        <Confetti />
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
+          className="flex flex-col items-center gap-2"
+        >
+          <span className="animate-heartbeat text-4xl">🎉</span>
+          <p className="font-display text-3xl font-semibold text-sand-50 sm:text-4xl">
+            Today's the day!
+          </p>
+          <p className="font-serif text-lg italic text-sand-100/90">
+            Thank you for celebrating with us by the sea.
+          </p>
+        </motion.div>
+      </>
+    )
+  }
 
   return (
     <div className="flex items-center justify-center gap-3 sm:gap-5">

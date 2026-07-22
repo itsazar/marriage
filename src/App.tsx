@@ -1,5 +1,8 @@
 import { useLenis } from './hooks/useLenis'
 import { Nav } from './components/Nav'
+import { IntroCurtain } from './components/IntroCurtain'
+import { ScrollProgress } from './components/ScrollProgress'
+import { MusicToggle } from './components/MusicToggle'
 import { Hero } from './components/Hero'
 import { MeetCouple } from './components/MeetCouple'
 import { LoveStory } from './components/LoveStory'
@@ -7,6 +10,7 @@ import { Schedule } from './components/Schedule'
 import { Venue } from './components/Venue'
 import { Gallery } from './components/Gallery'
 import { Rsvp } from './components/Rsvp'
+import { Guestbook } from './components/Guestbook'
 import { Footer } from './components/Footer'
 
 export default function App() {
@@ -14,6 +18,8 @@ export default function App() {
 
   return (
     <>
+      <IntroCurtain />
+      <ScrollProgress />
       <Nav />
       <main>
         <Hero />
@@ -23,8 +29,10 @@ export default function App() {
         <Venue />
         <Gallery />
         <Rsvp />
+        <Guestbook />
       </main>
       <Footer />
+      <MusicToggle />
     </>
   )
 }

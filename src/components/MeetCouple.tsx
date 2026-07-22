@@ -1,11 +1,80 @@
-import { motion } from 'framer-motion'
+import { useState } from 'react'
+import { AnimatePresence, motion } from 'framer-motion'
 import { Reveal } from './ui/Reveal'
 import { DoodleDraw } from './decor/DoodleDraw'
 import { sunDoodle, arrowRightDoodle, arrowLeftDoodle } from '../data/doodles'
+import { coupleFacts } from '../data/content'
 
 const CARICATURE = '/caricature.png'
 
 const ARROW_RED = '#e23b3b'
+
+type Person = (typeof coupleFacts)['bride']
+
+function FlipCard({ person, accent }: { person: Person; accent: string }) {
+  const [flipped, setFlipped] = useState(false)
+
+  return (
+    <motion.button
+      type="button"
+      onClick={() => setFlipped((value) => !value)}
+      whileTap={{ scale: 0.98 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
+      className="relative h-72 w-full overflow-hidden rounded-3xl"
+      aria-label={`Flip ${person.name}'s card`}
+    >
+      <AnimatePresence mode="wait" initial={false}>
+        {!flipped ? (
+          <motion.div
+            key="front"
+            initial={{ opacity: 0, x: -24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: 24 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 flex flex-col items-center justify-center rounded-3xl border border-sand-200 bg-white/80 p-6 text-center shadow-md"
+            style={{ boxShadow: `0 10px 30px -12px ${accent}55` }}
+          >
+            <span
+              className="flex h-16 w-16 items-center justify-center rounded-full text-2xl font-bold text-white shadow-inner"
+              style={{ backgroundColor: accent }}
+            >
+              {person.name[0]}
+            </span>
+            <p className="mt-4 font-body text-xs uppercase tracking-[0.3em]" style={{ color: accent }}>
+              {person.role}
+            </p>
+            <h3 className="mt-1 font-display text-3xl font-medium text-ink">{person.name}</h3>
+            <p className="mt-2 font-serif text-base italic text-ink/60">{person.tagline}</p>
+            <span className="mt-4 font-hand text-lg text-ink/40">tap to peek →</span>
+          </motion.div>
+        ) : (
+          <motion.div
+            key="back"
+            initial={{ opacity: 0, x: 24 }}
+            animate={{ opacity: 1, x: 0 }}
+            exit={{ opacity: 0, x: -24 }}
+            transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
+            className="absolute inset-0 rounded-3xl p-6 text-left text-sand-50 shadow-md"
+            style={{ background: `linear-gradient(150deg, ${accent}, ${accent}cc)` }}
+          >
+            <p className="font-display text-2xl font-medium">{person.name}</p>
+            <ul className="mt-4 space-y-3">
+              {person.facts.map((f) => (
+                <li key={f.q}>
+                  <p className="font-body text-[0.65rem] uppercase tracking-[0.25em] text-sand-100/80">
+                    {f.q}
+                  </p>
+                  <p className="font-serif text-lg leading-tight">{f.a}</p>
+                </li>
+              ))}
+            </ul>
+            <span className="mt-5 block font-hand text-lg text-sand-100/80">tap again to go back</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </motion.button>
+  )
+}
 
 export function MeetCouple() {
   return (
@@ -156,6 +225,15 @@ export function MeetCouple() {
             Two very different worlds, one unmistakable connection — turning up to forever in
             style.
           </p>
+        </Reveal>
+
+        {/* His vs Hers flip cards */}
+        <Reveal delay={0.5} className="mt-14">
+          <p className="text-center font-hand text-2xl text-ocean-600">His &amp; Hers, decoded 👀</p>
+          <div className="mx-auto mt-6 grid max-w-3xl gap-6 sm:grid-cols-2">
+            <FlipCard person={coupleFacts.bride} accent="#7b2d3a" />
+            <FlipCard person={coupleFacts.groom} accent="#0e807b" />
+          </div>
         </Reveal>
       </div>
     </section>

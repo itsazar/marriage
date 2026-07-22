@@ -1,0 +1,114 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --sand: #f6ece0;
+    --ocean: #0e807b;
+    --sunset: #e8824e;
+    --gold: #c9a24b;
+    --maroon: #7b2d3a;
+  }
+
+  html {
+    scroll-behavior: smooth;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  body {
+    @apply bg-sand-50 text-ink font-body;
+    overflow-x: hidden;
+  }
+
+  /* Lenis smooth scroll */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  ::selection {
+    @apply bg-ocean-500 text-sand-50;
+  }
+}
+
+@layer components {
+  .section-pad {
+    @apply px-6 py-24 sm:px-10 md:py-32;
+  }
+
+  .container-narrow {
+    @apply mx-auto w-full max-w-5xl;
+  }
+
+  .eyebrow {
+    @apply font-body text-xs uppercase tracking-[0.35em] text-ocean-500;
+  }
+
+  .heading-display {
+    @apply font-display text-4xl font-medium leading-tight text-ink sm:text-5xl md:text-6xl;
+  }
+
+  /* Shimmering gold text used for names */
+  .text-shimmer {
+    background: linear-gradient(
+      100deg,
+      #c9a24b 0%,
+      #f4d98a 25%,
+      #c9a24b 50%,
+      #f4d98a 75%,
+      #c9a24b 100%
+    );
+    background-size: 200% auto;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    @apply animate-shimmer;
+  }
+
+  /* Decorative divider dot line */
+  .divider-dots::before,
+  .divider-dots::after {
+    content: '';
+    @apply inline-block h-px w-10 align-middle bg-gold/60;
+  }
+
+  /* Hide horizontal scrollbar on the story reel */
+  .hide-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .hide-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-track {
+  background: #f6ece0;
+}
+::-webkit-scrollbar-thumb {
+  background: #0e807b;
+  border-radius: 999px;
+}
+
+/* Respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -26,30 +26,30 @@ export function Gallery() {
           <Kolam className="mt-6" />
         </Reveal>
 
-        <div className="mt-14 grid grid-cols-2 gap-4 md:grid-cols-3">
+        <div className="mt-14 gap-4 [column-fill:_balance] columns-2 md:columns-3">
           {gallery.map((photo, i) => (
             <Reveal
               key={i}
-              delay={i * 0.5}
-              className={i % 5 === 0 ? 'col-span-2 row-span-2 md:col-span-1 md:row-span-2' : ''}
+              delay={(i % 3) * 0.5}
+              className="mb-4 break-inside-avoid"
             >
               <button
                 type="button"
                 onClick={() => setActive(i)}
-                className="group relative block h-full min-h-[150px] w-full overflow-hidden rounded-2xl shadow-sm"
+                className="group relative block w-full overflow-hidden rounded-2xl shadow-sm"
               >
                 {photo.src ? (
                   <img
                     src={photo.src}
                     alt={photo.caption}
                     loading="lazy"
-                    className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110"
+                    className="w-full object-cover transition-transform duration-700 group-hover:scale-105"
                   />
                 ) : (
                   <div
-                    className={`flex h-full min-h-[150px] w-full items-center justify-center bg-gradient-to-br ${
+                    className={`flex min-h-[220px] w-full items-center justify-center bg-gradient-to-br ${
                       fallbackGradients[i % fallbackGradients.length]
-                    } transition-transform duration-700 group-hover:scale-110`}
+                    } transition-transform duration-700 group-hover:scale-105`}
                   >
                     <svg viewBox="0 0 24 24" className="h-8 w-8 text-white/70" fill="currentColor">
                       <path d="M21 5H3a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h18a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1zM8.5 9a1.5 1.5 0 1 1 0 3 1.5 1.5 0 0 1 0-3zM5 17l4-5 3 4 3-3 4 4H5z" />

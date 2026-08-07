@@ -41,7 +41,7 @@ export const events = [
     tamilName: 'திருமணம்',
     date: 'Saturday, September 13',
     time: '5:00 AM – 7:00 AM',
-    blurb: 'The sacred vows at dawn, as the sun rises over the Bay of Bengal.',
+    blurb: 'A Hindu-style ceremony — the sacred vows at dawn, as the sun rises over the Bay of Bengal.',
     icon: 'rings',
     start: [2026, 9, 13, 5, 0],
     end: [2026, 9, 13, 7, 0],
@@ -49,6 +49,22 @@ export const events = [
       label: 'Traditional & Beach-formal',
       hint: 'Soft pastels, breezy silks',
       colors: ['#f6ece0', '#e07a5f', '#f2a65a'],
+    },
+  },
+  {
+    id: 'valima',
+    name: 'The Valima',
+    tamilName: 'வலீமா',
+    date: 'Thursday, September 17',
+    time: '12:00 PM – 3:00 PM',
+    blurb: 'A Muslim-style Valima feast in Gannavaram, Telangana — good food and blessings to celebrate the union.',
+    icon: 'sparkles',
+    start: [2026, 9, 17, 12, 0],
+    end: [2026, 9, 17, 15, 0],
+    dressCode: {
+      label: 'Traditional & Elegant',
+      hint: 'Rich hues, festive attire',
+      colors: ['#0e807b', '#c9a24b', '#7b2d3a'],
     },
   },
 ]
@@ -175,16 +191,120 @@ export const guestbookSeed = [
   { name: 'Meera', message: 'A beach wedding at sunrise? Iconic. See you there ❤️' },
 ]
 
-// Placeholder gallery. Replace `src` with your own photo URLs / imported images.
+// Gallery photos. Files live in `public/gallery/` and are served from the site root.
+// To swap a photo, just replace the matching file in that folder (keep the same name).
 export const gallery = [
-  { src: '', caption: 'The proposal' },
-  { src: '', caption: 'Sun, sand & us' },
-  { src: '', caption: 'Golden hour' },
-  { src: '', caption: 'Together' },
-  { src: '', caption: 'By the bay' },
-  { src: '', caption: 'Forever begins' },
+  { src: '/gallery/1.jpg', caption: 'Where it all began' },
+  { src: '/gallery/2.jpg', caption: 'Seeking blessings' },
+  { src: '/gallery/3.jpg', caption: 'Us, today' },
+  { src: '/gallery/4.jpg', caption: 'A rose & a smile' },
+  { src: '/gallery/5.jpg', caption: 'Just us' },
+  { src: '/gallery/6.jpg', caption: 'Coffee & us' },
+  { src: '/gallery/7.jpg', caption: 'Evenings out' },
 ]
 
 // Paste your Google Form link here when ready.
 export const rsvpFormUrl = 'https://forms.gle/your-google-form-id'
 export const rsvpDeadline = 'Kindly respond before September 1st'
+
+// ---------------------------------------------------------------------------
+//  Two Traditions, One Love — a little guide to both celebrations.
+// ---------------------------------------------------------------------------
+export const traditions = {
+  intro:
+    'Two faiths, two beautiful traditions, one shared love. A little guide to what each celebration means to us.',
+  items: [
+    {
+      id: 'hindu',
+      motif: 'kolam' as const,
+      title: 'Hindu Wedding',
+      subtitle: 'Chennai · September 13',
+      lines: [
+        'A dawn ceremony (muhurtham) where sacred vows are exchanged before the holy fire.',
+        'Kolam art, jasmine flowers, the tying of the thaali, and seven steps taken together as one.',
+      ],
+      note: 'Come as you are — your blessings are all we ask you to bring.',
+    },
+    {
+      id: 'valima',
+      motif: 'arabesque' as const,
+      title: 'Muslim Valima',
+      subtitle: 'Gannavaram, Telangana · September 17',
+      lines: [
+        'The Valima is the celebratory feast that follows the nikah, sharing our joy far and wide.',
+        'A warm gathering of good food, blessings and duas for a happy, blessed married life.',
+      ],
+      note: 'Modest, festive attire is lovely — and hearty appetites are very welcome.',
+    },
+  ],
+}
+
+// ---------------------------------------------------------------------------
+//  Songs of Our Story — the soundtrack to twenty years of us.
+// ---------------------------------------------------------------------------
+export const playlist = {
+  note: 'The soundtrack to twenty years of us. Press play and fall in love with us all over again.',
+  // Optional: paste a Spotify playlist embed URL (…/embed/playlist/ID) to show a live player.
+  spotifyEmbedUrl: '',
+  songs: [
+    { title: 'Nenjukkul Peidhidum', artist: 'Harris Jayaraj', mood: 'The first spark' },
+    { title: 'Munbe Vaa', artist: 'A. R. Rahman', mood: 'Falling, slowly' },
+    { title: 'Perfect', artist: 'Ed Sheeran', mood: 'Made for each other' },
+    { title: 'Kannana Kanne', artist: 'Sid Sriram', mood: 'The long wait' },
+    { title: 'Can’t Help Falling in Love', artist: 'Elvis Presley', mood: 'Forever begins' },
+  ],
+}
+
+// ---------------------------------------------------------------------------
+//  Travel & Stay — events span two cities this time.
+// ---------------------------------------------------------------------------
+export const travelStay = [
+  {
+    id: 'chennai',
+    city: 'Chennai, Tamil Nadu',
+    forEvents: 'Reception & Wedding · Sep 12–13',
+    icon: 'beach' as const,
+    tips: [
+      "Fly into Chennai Int'l Airport (MAA), about 40 min from the venue.",
+      'The venue sits on the ECR — cabs and autos are easy to find.',
+      'Plenty of resort rooms and ECR hotels for a beachside stay.',
+    ],
+  },
+  {
+    id: 'gannavaram',
+    city: 'Gannavaram, Telangana',
+    forEvents: 'Valima · Sep 17',
+    icon: 'palm' as const,
+    tips: [
+      'Nearest hub is Vijayawada — well connected by train and road.',
+      'Vijayawada Airport (VGA) is the closest for flyers.',
+      'We’ll share a list of nearby stays as the date draws near.',
+    ],
+  },
+]
+
+// ---------------------------------------------------------------------------
+//  Frequently Asked Questions.
+// ---------------------------------------------------------------------------
+export const faqs = [
+  {
+    q: 'Can I bring my children?',
+    a: 'Absolutely — little ones make every celebration merrier. Do let us know in your RSVP so we can plan.',
+  },
+  {
+    q: 'What should I wear?',
+    a: 'Festive and comfortable. The wedding is a breezy beach morning, so soft fabrics work best; the Valima calls for modest, elegant attire.',
+  },
+  {
+    q: 'Do I need to attend all the events?',
+    a: 'Join us for whatever you can — every moment you share with us means the world.',
+  },
+  {
+    q: 'Are gifts expected?',
+    a: 'Your presence is the only gift we hope for. If you’d still like to bless us, your love and good wishes are more than enough.',
+  },
+  {
+    q: 'Whom do I contact for help?',
+    a: 'Reach out to the family contacts shared on your invitation, and we’ll be glad to assist.',
+  },
+]

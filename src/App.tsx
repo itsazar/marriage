@@ -7,11 +7,14 @@ import { Hero } from './components/Hero'
 import { MeetCouple } from './components/MeetCouple'
 import { LoveStory } from './components/LoveStory'
 import { Schedule } from './components/Schedule'
+import { Traditions } from './components/Traditions'
 import { Venue } from './components/Venue'
-import { Gallery } from './components/Gallery'
+import { TravelStay } from './components/TravelStay'
+import { Playlist } from './components/Playlist'
 import { Rsvp } from './components/Rsvp'
-import { Guestbook } from './components/Guestbook'
+import { Faq } from './components/Faq'
 import { Footer } from './components/Footer'
+import { CursorTrail } from './components/decor/CursorTrail'
 
 export default function App() {
   useLenis()
@@ -20,16 +23,19 @@ export default function App() {
     <>
       <IntroCurtain />
       <ScrollProgress />
+      <CursorTrail />
       <Nav />
       <main>
         <Hero />
         <MeetCouple />
         <LoveStory />
         <Schedule />
+        <Traditions />
         <Venue />
-        <Gallery />
+        <TravelStay />
+        <Playlist />
         <Rsvp />
-        <Guestbook />
+        <Faq />
       </main>
       <Footer />
       <MusicToggle />

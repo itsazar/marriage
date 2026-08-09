@@ -29,6 +29,8 @@ export function useLenis() {
       if (!target) return
       const id = target.getAttribute('href')
       if (!id || id === '#') return
+      // Route-style hashes (e.g. #/album) are handled by the router, not scroll.
+      if (id.startsWith('#/')) return
       const el = document.querySelector(id)
       if (el) {
         e.preventDefault()

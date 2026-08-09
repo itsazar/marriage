@@ -16,9 +16,22 @@ import { Faq } from './components/Faq'
 import { Footer } from './components/Footer'
 import { CursorTrail } from './components/decor/CursorTrail'
 import { Fireworks } from './components/decor/Fireworks'
+import { AlbumPage } from './components/AlbumPage'
+import { useEffect, useState } from 'react'
 
 export default function App() {
   useLenis()
+
+  const [route, setRoute] = useState(() => window.location.hash.replace(/^#/, ''))
+  useEffect(() => {
+    const onHash = () => setRoute(window.location.hash.replace(/^#/, ''))
+    window.addEventListener('hashchange', onHash)
+    return () => window.removeEventListener('hashchange', onHash)
+  }, [])
+
+  if (route === '/album') {
+    return <AlbumPage />
+  }
 
   return (
     <>

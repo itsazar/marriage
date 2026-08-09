@@ -7,6 +7,7 @@ const links = [
   { href: '#story', label: 'Our Story' },
   { href: '#events', label: 'Events' },
   { href: '#venue', label: 'Venue' },
+  { href: '#/album', label: 'Album' },
 ]
 
 export function Nav() {

@@ -54,9 +54,9 @@ export function AlbumPage() {
   }, [measure])
 
   const applyWave = useCallback((mx: number, my: number) => {
-    const radius = 150 // px area of influence around the cursor
-    const maxScale = 2 // zoomed-in tile right under the cursor
-    const minScale = 0.82 // everything else gently zooms out
+    const radius = 180 // area of influence around the cursor
+    const maxScale = 1.7 // zoomed-in tile right under the cursor
+    const minScale = 0.9 // everything else gently zooms out
     const els = tileRefs.current
     const cs = centers.current
     for (let i = 0; i < els.length; i++) {
@@ -67,7 +67,7 @@ export function AlbumPage() {
       const dy = c.y - my
       const dist = Math.hypot(dx, dy)
       const t = Math.max(0, 1 - dist / radius) // 1 at cursor → 0 at edge
-      const ease = t * t * (3 - 2 * t) // smoothstep for a soft wave
+      const ease = Math.pow(t, 1.5) // softer falloff so far tiles still react
       const scale = minScale + (maxScale - minScale) * ease
       el.style.transform = `scale(${scale})`
       el.style.zIndex = ease > 0.05 ? String(10 + Math.round(ease * 20)) : '1'
@@ -137,29 +137,61 @@ export function AlbumPage() {
   }
 
   return (
-    <div className="flex h-screen flex-col overflow-hidden bg-gradient-to-b from-sand-50 to-sand-100">
+    <div className="flex h-screen flex-col overflow-hidden bg-black">
       {/* Header */}
-      <header className="z-30 flex shrink-0 items-center justify-between bg-sand-50/85 px-6 py-3 backdrop-blur-md">
+      <header className="z-30 flex shrink-0 items-center justify-between gap-3 border-b border-white/5 bg-black/70 px-6 py-3 backdrop-blur-md">
         <button
           type="button"
           onClick={goHome}
-          className="flex items-center gap-2 font-body text-sm text-ink/80 transition hover:text-ocean-600"
+          className="flex items-center gap-2 font-body text-sm text-white/80 transition hover:text-sunset-400"
         >
           <svg viewBox="0 0 24 24" className="h-4 w-4" fill="none" stroke="currentColor" strokeWidth="2">
             <path d="M15 6l-6 6 6 6" />
           </svg>
           Back
         </button>
-        <h1 className="font-display text-xl font-semibold text-ink sm:text-2xl">Our Album</h1>
-        <span className="font-body text-xs tabular-nums text-ink/50">{n} photos</span>
+
+        {/* Creative title */}
+        <div className="flex flex-col items-center leading-none">
+          <span className="mb-1 font-body text-[9px] uppercase tracking-[0.45em] text-sunset-400/80 sm:text-[10px]">
+            Lavanya &amp; Azar
+          </span>
+          <div className="flex items-center gap-2.5">
+            <span className="hidden h-px w-8 bg-gradient-to-r from-transparent to-sunset-400/50 sm:block" />
+            <h1 className="bg-gradient-to-r from-sunset-400 via-coral to-gold bg-clip-text font-serif text-2xl italic text-transparent drop-shadow-[0_1px_10px_rgba(255,140,80,0.25)] sm:text-3xl">
+              Frozen in Time
+            </h1>
+            <motion.span
+              aria-hidden
+              animate={{ scale: [1, 1.28, 1] }}
+              transition={{ duration: 1.1, repeat: Infinity, ease: 'easeInOut' }}
+              className="text-lg sm:text-xl"
+            >
+              💛
+            </motion.span>
+            <span className="hidden h-px w-8 bg-gradient-to-l from-transparent to-sunset-400/50 sm:block" />
+          </div>
+        </div>
+
+        <span className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-body text-[11px] tabular-nums text-white/60">
+          <svg viewBox="0 0 24 24" className="h-3 w-3 text-sunset-400" fill="none" stroke="currentColor" strokeWidth="2">
+            <rect x="3" y="3" width="18" height="18" rx="2" />
+            <circle cx="8.5" cy="8.5" r="1.5" />
+            <path d="M21 15l-5-5L5 21" />
+          </svg>
+          {n} photos
+        </span>
       </header>
 
       {/* Full-page mosaic of round photos — fills the viewport without scrolling */}
       <div className="min-h-0 w-full flex-1 overflow-hidden px-1.5 py-2 sm:px-3 sm:py-3">
         <div
+          onPointerDown={onPointerMove}
           onPointerMove={onPointerMove}
+          onPointerUp={resetWave}
           onPointerLeave={resetWave}
-          className="grid grid-cols-[repeat(auto-fill,minmax(28px,1fr))] gap-1 sm:grid-cols-[repeat(auto-fill,minmax(38px,1fr))] sm:gap-1.5"
+          onPointerCancel={resetWave}
+          className="grid touch-none grid-cols-[repeat(auto-fill,minmax(28px,1fr))] gap-1 sm:grid-cols-[repeat(auto-fill,minmax(38px,1fr))] sm:gap-1.5"
         >
           {tiles.map((src, i) => (
             <button

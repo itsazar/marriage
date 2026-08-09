@@ -15,6 +15,7 @@ import { Rsvp } from './components/Rsvp'
 import { Faq } from './components/Faq'
 import { Footer } from './components/Footer'
 import { CursorTrail } from './components/decor/CursorTrail'
+import { Fireworks } from './components/decor/Fireworks'
 
 export default function App() {
   useLenis()
@@ -22,6 +23,7 @@ export default function App() {
   return (
     <>
       <IntroCurtain />
+      <Fireworks />
       <ScrollProgress />
       <CursorTrail />
       <Nav />

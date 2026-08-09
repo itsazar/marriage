@@ -9,8 +9,12 @@ import { heartDoodle } from '../data/doodles'
 export function LoveStory() {
   const [active, setActive] = useState(0)
   const [dir, setDir] = useState(1)
-  const autoRef = useRef(true)
+  const [touring, setTouring] = useState(false)
+  const [progress, setProgress] = useState(0)
+  const startedRef = useRef(false)
   const n = loveStory.length
+
+  const DWELL = 6000 // ms each chapter stays on screen during the tour
 
   // Scroll-scrubbed "journey" line that draws as the section moves through view.
   const sectionRef = useRef<HTMLElement>(null)
@@ -22,26 +26,57 @@ export function LoveStory() {
   const pathLength = useTransform(scrollYProgress, [0, 1], [0, 1])
   const markerOffset = useTransform(scrollYProgress, [0, 1], ['0%', '100%'])
 
-  // Gentle auto-advance until the user interacts.
+  // Auto-start the guided tour the first time the section comes into view.
   useEffect(() => {
+    if (inView && !startedRef.current) {
+      startedRef.current = true
+      setTouring(true)
+    }
+  }, [inView])
+
+  // The guided tour: dwell on each chapter, then advance to the next.
+  useEffect(() => {
+    if (!touring || !inView) return
+    setProgress(0)
+    const step = 50
     const id = setInterval(() => {
-      if (!autoRef.current) return
-      setDir(1)
-      setActive((prev) => {
-        if (prev >= n - 1) {
-          autoRef.current = false
-          return prev
+      setProgress((p) => {
+        const next = p + step / DWELL
+        if (next >= 1) {
+          setActive((prev) => {
+            if (prev >= n - 1) {
+              setTouring(false)
+              return prev
+            }
+            setDir(1)
+            return prev + 1
+          })
+          return 0
         }
-        return prev + 1
+        return next
       })
-    }, 5000)
+    }, step)
     return () => clearInterval(id)
-  }, [n])
+  }, [touring, inView, active, n])
 
   const go = (i: number) => {
-    autoRef.current = false
+    setTouring(false) // any manual interaction pauses the tour
+    setProgress(0)
     setDir(i > active ? 1 : -1)
     setActive(Math.max(0, Math.min(n - 1, i)))
+  }
+
+  const toggleTour = () => {
+    if (active >= n - 1 && !touring) {
+      // Finished — replay from the beginning.
+      setDir(1)
+      setActive(0)
+      setProgress(0)
+      setTouring(true)
+      return
+    }
+    setProgress(0)
+    setTouring((t) => !t)
   }
 
   // Keyboard arrow navigation while the section is in view.
@@ -56,9 +91,28 @@ export function LoveStory() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView, active])
 
+  const finished = active >= n - 1 && !touring
   const item = loveStory[active]
   const inset = 100 / n / 2 // half a column, so the line meets node centres
   const fillWidth = `calc((100% - ${100 / n}%) * ${n > 1 ? active / (n - 1) : 0})`
+
+  // Pointer-based swipe (works for touch + mouse) on the story panel.
+  const swipeStart = useRef<{ x: number; y: number } | null>(null)
+  const onPointerDown = (e: React.PointerEvent) => {
+    swipeStart.current = { x: e.clientX, y: e.clientY }
+  }
+  const onPointerUp = (e: React.PointerEvent) => {
+    const start = swipeStart.current
+    swipeStart.current = null
+    if (!start) return
+    const dx = e.clientX - start.x
+    const dy = e.clientY - start.y
+    // Only treat as a swipe when it's mostly horizontal and long enough.
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) {
+      if (dx < 0) go(active + 1)
+      else go(active - 1)
+    }
+  }
 
   return (
     <section ref={sectionRef} id="story" className="section-pad relative overflow-hidden bg-sand-50">
@@ -121,30 +175,45 @@ export function LoveStory() {
           <ol className="relative grid" style={{ gridTemplateColumns: `repeat(${n}, minmax(0, 1fr))` }}>
             {loveStory.map((c, i) => {
               const done = i <= active
+              const isActive = i === active
               return (
                 <li key={c.chapter} className="flex flex-col items-center">
                   <button
                     type="button"
                     onClick={() => go(i)}
                     aria-label={`${c.chapter}: ${c.title}`}
-                    aria-current={i === active}
+                    aria-current={isActive}
                     className={`relative z-10 flex h-10 w-10 items-center justify-center rounded-full ring-4 ring-sand-50 transition-all duration-300 sm:h-12 sm:w-12 ${
-                      done ? 'scale-100 bg-white shadow-md' : 'scale-90 bg-sand-100 opacity-70'
-                    } ${
-                      i === active ? 'text-sunset-500 ring-gold/40' : done ? 'text-ocean-600' : 'text-ink/40'
+                      isActive
+                        ? 'scale-125 bg-gradient-to-br from-sunset-500 to-coral text-white shadow-lg shadow-sunset-500/40'
+                        : done
+                          ? 'scale-100 bg-white text-ocean-600 shadow-md'
+                          : 'scale-90 bg-sand-100 text-ink/40 opacity-70'
                     }`}
                   >
                     <StoryIcon name={c.icon as StoryIconName} className="h-5 w-5 sm:h-6 sm:w-6" />
-                    {i === active && (
-                      <motion.span
-                        layoutId="node-halo"
-                        className="absolute inset-0 rounded-full ring-2 ring-gold"
-                      />
+                    {isActive && (
+                      <>
+                        {/* Pulsing glow ring around the active chapter */}
+                        <motion.span
+                          className="absolute -inset-2 rounded-full ring-2 ring-gold"
+                          animate={{ opacity: [0.7, 0.2, 0.7], scale: [1, 1.15, 1] }}
+                          transition={{ duration: 1.8, repeat: Infinity, ease: 'easeInOut' }}
+                        />
+                        <motion.span
+                          layoutId="node-halo"
+                          className="absolute inset-0 rounded-full ring-[3px] ring-gold"
+                        />
+                      </>
                     )}
                   </button>
                   <span
-                    className={`mt-2 hidden text-center font-body text-[0.65rem] uppercase tracking-[0.15em] transition-colors sm:block ${
-                      i === active ? 'text-ocean-600' : 'text-ink/40'
+                    className={`mt-2 hidden text-center font-body text-[0.65rem] uppercase tracking-[0.15em] transition-all sm:block ${
+                      isActive
+                        ? 'scale-110 font-bold text-sunset-500'
+                        : done
+                          ? 'text-ocean-600'
+                          : 'text-ink/40'
                     }`}
                   >
                     {c.chapter.replace('Chapter ', '')}
@@ -156,7 +225,11 @@ export function LoveStory() {
         </div>
 
         {/* Single content panel */}
-        <div className="relative mt-10 min-h-[240px] sm:min-h-[220px]">
+        <div
+          className="relative mt-10 min-h-[240px] touch-pan-y sm:min-h-[220px]"
+          onPointerDown={onPointerDown}
+          onPointerUp={onPointerUp}
+        >
           <AnimatePresence mode="wait" custom={dir}>
             <motion.div
               key={active}
@@ -170,16 +243,7 @@ export function LoveStory() {
               animate="center"
               exit="exit"
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              drag="x"
-              dragConstraints={{ left: 0, right: 0 }}
-              dragElastic={0.18}
-              onDragEnd={(_, info) => {
-                const swipe = info.offset.x + info.velocity.x * 0.2
-                if (swipe < -80) go(active + 1)
-                else if (swipe > 80) go(active - 1)
-              }}
-              whileDrag={{ cursor: 'grabbing', scale: 0.98 }}
-              className="mx-auto max-w-2xl cursor-grab touch-pan-y select-none rounded-3xl border border-sand-200 bg-white/85 p-8 text-center shadow-md backdrop-blur-sm sm:p-10"
+              className="mx-auto max-w-2xl select-none rounded-3xl border border-sand-200 bg-white/85 p-8 text-center shadow-md backdrop-blur-sm sm:p-10"
             >
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-sand-100 text-sunset-500 shadow-inner ring-1 ring-sand-200">
                 <StoryIcon name={item.icon as StoryIconName} className="h-7 w-7" />
@@ -207,8 +271,17 @@ export function LoveStory() {
           </AnimatePresence>
         </div>
 
-        {/* Prev / next controls */}
-        <div className="mt-8 flex items-center justify-center gap-6">
+        {/* Guided-tour progress bar for the current chapter */}
+        <div className="mx-auto mt-6 h-1 max-w-xs overflow-hidden rounded-full bg-sand-200">
+          <motion.span
+            className="block h-full rounded-full bg-gradient-to-r from-gold via-sunset-500 to-coral"
+            animate={{ width: touring ? `${progress * 100}%` : finished ? '100%' : '0%' }}
+            transition={{ duration: 0.05, ease: 'linear' }}
+          />
+        </div>
+
+        {/* Prev / tour / next controls */}
+        <div className="mt-6 flex items-center justify-center gap-5">
           <button
             type="button"
             onClick={() => go(active - 1)}
@@ -220,12 +293,30 @@ export function LoveStory() {
               <path d="M15 6l-6 6 6 6" />
             </svg>
           </button>
-          <span className="flex flex-col items-center font-body text-sm tabular-nums text-ink/50">
-            {active + 1} / {n}
-            <span className="mt-0.5 text-[0.6rem] uppercase tracking-[0.15em] text-ink/30">
-              swipe or use ← →
-            </span>
-          </span>
+
+          {/* Guided tour play / pause / replay */}
+          <button
+            type="button"
+            onClick={toggleTour}
+            aria-label={touring ? 'Pause the tour' : finished ? 'Replay the tour' : 'Start the guided tour'}
+            className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-sunset-500 to-coral text-white shadow-lg ring-4 ring-sand-50 transition hover:scale-105"
+          >
+            {touring ? (
+              <svg viewBox="0 0 24 24" className="h-6 w-6" fill="currentColor" aria-hidden="true">
+                <path d="M6 5h4v14H6zM14 5h4v14h-4z" />
+              </svg>
+            ) : finished ? (
+              <svg viewBox="0 0 24 24" className="h-6 w-6" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <path d="M3 12a9 9 0 1 0 3-6.7" />
+                <path d="M3 4v4h4" />
+              </svg>
+            ) : (
+              <svg viewBox="0 0 24 24" className="ml-0.5 h-6 w-6" fill="currentColor" aria-hidden="true">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            )}
+          </button>
+
           <button
             type="button"
             onClick={() => go(active + 1)}
@@ -237,6 +328,14 @@ export function LoveStory() {
               <path d="M9 6l6 6-6 6" />
             </svg>
           </button>
+        </div>
+
+        {/* Counter + hint */}
+        <div className="mt-4 flex flex-col items-center font-body text-sm tabular-nums text-ink/50">
+          <span>{active + 1} / {n}</span>
+          <span className="mt-0.5 text-[0.6rem] uppercase tracking-[0.15em] text-ink/30">
+            {touring ? 'Guided tour playing…' : finished ? 'Tap replay to watch again' : 'Play the tour · swipe · ← →'}
+          </span>
         </div>
       </div>
     </section>

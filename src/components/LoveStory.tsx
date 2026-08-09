@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { AnimatePresence, motion, useScroll, useTransform } from 'framer-motion'
+import { AnimatePresence, motion, useInView, useScroll, useTransform } from 'framer-motion'
 import { loveStory } from '../data/content'
 import { Reveal } from './ui/Reveal'
 import { DoodleDraw } from './decor/DoodleDraw'
@@ -14,6 +14,7 @@ export function LoveStory() {
 
   // Scroll-scrubbed "journey" line that draws as the section moves through view.
   const sectionRef = useRef<HTMLElement>(null)
+  const inView = useInView(sectionRef, { amount: 0.4 })
   const { scrollYProgress } = useScroll({
     target: sectionRef,
     offset: ['start 0.85', 'end 0.35'],
@@ -42,6 +43,18 @@ export function LoveStory() {
     setDir(i > active ? 1 : -1)
     setActive(Math.max(0, Math.min(n - 1, i)))
   }
+
+  // Keyboard arrow navigation while the section is in view.
+  useEffect(() => {
+    if (!inView) return
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowLeft') go(active - 1)
+      else if (e.key === 'ArrowRight') go(active + 1)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [inView, active])
 
   const item = loveStory[active]
   const inset = 100 / n / 2 // half a column, so the line meets node centres
@@ -157,7 +170,16 @@ export function LoveStory() {
               animate="center"
               exit="exit"
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
-              className="mx-auto max-w-2xl rounded-3xl border border-sand-200 bg-white/85 p-8 text-center shadow-md backdrop-blur-sm sm:p-10"
+              drag="x"
+              dragConstraints={{ left: 0, right: 0 }}
+              dragElastic={0.18}
+              onDragEnd={(_, info) => {
+                const swipe = info.offset.x + info.velocity.x * 0.2
+                if (swipe < -80) go(active + 1)
+                else if (swipe > 80) go(active - 1)
+              }}
+              whileDrag={{ cursor: 'grabbing', scale: 0.98 }}
+              className="mx-auto max-w-2xl cursor-grab touch-pan-y select-none rounded-3xl border border-sand-200 bg-white/85 p-8 text-center shadow-md backdrop-blur-sm sm:p-10"
             >
               <div className="mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-sand-100 text-sunset-500 shadow-inner ring-1 ring-sand-200">
                 <StoryIcon name={item.icon as StoryIconName} className="h-7 w-7" />
@@ -198,8 +220,11 @@ export function LoveStory() {
               <path d="M15 6l-6 6 6 6" />
             </svg>
           </button>
-          <span className="font-body text-sm tabular-nums text-ink/50">
+          <span className="flex flex-col items-center font-body text-sm tabular-nums text-ink/50">
             {active + 1} / {n}
+            <span className="mt-0.5 text-[0.6rem] uppercase tracking-[0.15em] text-ink/30">
+              swipe or use ← →
+            </span>
           </span>
           <button
             type="button"

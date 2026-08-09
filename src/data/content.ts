@@ -77,7 +77,7 @@ export const coupleFacts = {
     tagline: 'Sunshine with a stubborn streak',
     facts: [
       { q: 'Superpower', a: 'Winning every argument 😎' },
-      { q: 'Weakness', a: 'Filter coffee & sunsets' },
+      { q: 'Weakness', a: 'Street shopping & bargaining' },
       { q: 'Always', a: 'Right (allegedly)' },
       { q: 'Says sorry', a: "Never — she's never wrong" },
     ],
@@ -247,11 +247,11 @@ export const playlist = {
   // Optional: paste a Spotify playlist embed URL (…/embed/playlist/ID) to show a live player.
   spotifyEmbedUrl: '',
   songs: [
-    { title: 'Nenjukkul Peidhidum', artist: 'Harris Jayaraj', mood: 'The first spark' },
-    { title: 'Munbe Vaa', artist: 'A. R. Rahman', mood: 'Falling, slowly' },
-    { title: 'Perfect', artist: 'Ed Sheeran', mood: 'Made for each other' },
-    { title: 'Kannana Kanne', artist: 'Sid Sriram', mood: 'The long wait' },
-    { title: 'Can’t Help Falling in Love', artist: 'Elvis Presley', mood: 'Forever begins' },
+    { title: 'Thangamey', artist: 'Justin Prabhakaran (Paava Kadhaigal)', mood: 'The first spark', src: '/audio/thangamey.mp3' },
+    { title: 'A Million Dreams', artist: 'The Greatest Showman', mood: 'Dreaming of us', src: '/audio/a-million-dreams.mp3' },
+    { title: 'Perfect', artist: 'Ed Sheeran', mood: 'Made for each other', src: '/audio/perfect.mp3' },
+    { title: 'A Thousand Years', artist: 'Christina Perri', mood: 'The long wait', src: '/audio/a-thousand-years.mp3' },
+    { title: 'Mudhal Nee Mudivum Nee', artist: 'Sid Sriram', mood: 'You, the beginning & the end', src: '/audio/mudhal-nee-mudivum-nee.mp3' },
   ],
 }
 

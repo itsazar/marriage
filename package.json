@@ -7,7 +7,8 @@
   "scripts": {
     "dev": "vite",
     "build": "tsc -b && vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "album": "node scripts/optimize-album.mjs"
   },
   "dependencies": {
     "framer-motion": "^11.3.8",
@@ -20,7 +21,9 @@
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.19",
+    "heic-convert": "^2.1.0",
     "postcss": "^8.4.40",
+    "sharp": "^0.35.3",
     "tailwindcss": "^3.4.7",
     "typescript": "^5.5.4",
     "vite": "^5.3.5"

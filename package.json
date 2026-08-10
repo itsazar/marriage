@@ -8,7 +8,8 @@
     "dev": "vite",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
-    "album": "node scripts/optimize-album.mjs"
+    "album": "node scripts/optimize-album.mjs",
+    "album:rename": "node scripts/rename-raw.mjs"
   },
   "dependencies": {
     "framer-motion": "^11.3.8",

@@ -12,11 +12,11 @@ import { Venue } from './components/Venue'
 import { TravelStay } from './components/TravelStay'
 import { Playlist } from './components/Playlist'
 import { Rsvp } from './components/Rsvp'
-import { Faq } from './components/Faq'
 import { Footer } from './components/Footer'
 import { CursorTrail } from './components/decor/CursorTrail'
 import { Fireworks } from './components/decor/Fireworks'
 import { AlbumPage } from './components/AlbumPage'
+import { AlbumTeaser } from './components/AlbumTeaser'
 import { useEffect, useState } from 'react'
 
 export default function App() {
@@ -44,13 +44,13 @@ export default function App() {
         <Hero />
         <MeetCouple />
         <LoveStory />
+        <AlbumTeaser />
         <Schedule />
         <Traditions />
         <Venue />
         <TravelStay />
         <Playlist />
         <Rsvp />
-        <Faq />
       </main>
       <Footer />
       <MusicToggle />

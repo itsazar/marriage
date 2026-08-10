@@ -5,9 +5,9 @@ import { couple } from '../data/content'
 const links = [
   { href: '#couple', label: 'The Couple' },
   { href: '#story', label: 'Our Story' },
+  { href: '#album', label: 'Album' },
   { href: '#events', label: 'Events' },
   { href: '#venue', label: 'Venue' },
-  { href: '#/album', label: 'Album' },
 ]
 
 export function Nav() {

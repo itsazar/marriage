@@ -13,7 +13,7 @@ export const couple = {
 
 // Target date/time the countdown ticks down to (the wedding muhurtham).
 // Format: YYYY, monthIndex (0 = Jan), day, hour (24h), minute
-export const countdownTarget = new Date(2026, 8, 13, 5, 0, 0) // Sep 13, 2026, 5:00 AM
+export const countdownTarget = new Date(2026, 8, 13, 6, 0, 0) // Sep 13, 2026, 6:00 AM
 
 export const heroTagline = 'Two souls, one shore, forever entwined.'
 
@@ -23,12 +23,12 @@ export const events = [
     name: 'Reception',
     tamilName: 'வரவேற்பு',
     date: 'Saturday, September 12',
-    time: '7:00 PM – 10:00 PM',
+    time: '7:00 PM – 9:00 PM',
     blurb: 'An evening of music, feasting and celebration under the coastal stars.',
     icon: 'sparkles',
     // Calendar invite times: [year, month(1-12), day, hour(24h), minute]
     start: [2026, 9, 12, 19, 0],
-    end: [2026, 9, 12, 22, 0],
+    end: [2026, 9, 12, 21, 0],
     dressCode: {
       label: 'Festive & Glam',
       hint: 'Jewel tones, flowy fabrics',
@@ -40,10 +40,10 @@ export const events = [
     name: 'The Wedding',
     tamilName: 'திருமணம்',
     date: 'Sunday, September 13',
-    time: '5:00 AM – 7:00 AM',
+    time: '6:00 AM – 7:00 AM',
     blurb: 'A Hindu-style ceremony — the sacred vows at dawn, as the sun rises over the Bay of Bengal.',
     icon: 'rings',
-    start: [2026, 9, 13, 5, 0],
+    start: [2026, 9, 13, 6, 0],
     end: [2026, 9, 13, 7, 0],
     dressCode: {
       label: 'Traditional & Beach-formal',
@@ -52,12 +52,12 @@ export const events = [
     },
   },
   {
-    id: 'valima',
-    name: 'The Valima',
+    id: 'walima',
+    name: 'The Walima',
     tamilName: 'வலீமா',
     date: 'Thursday, September 17',
     time: '12:00 PM – 3:00 PM',
-    blurb: 'A Muslim-style Valima feast in Gannavaram, Telangana — good food and blessings to celebrate the union.',
+    blurb: 'A Muslim-style Walima feast in Gannavaram, Telangana — good food and blessings to celebrate the union.',
     icon: 'sparkles',
     start: [2026, 9, 17, 12, 0],
     end: [2026, 9, 17, 15, 0],
@@ -226,12 +226,12 @@ export const traditions = {
       note: 'Come as you are — your blessings are all we ask you to bring.',
     },
     {
-      id: 'valima',
+      id: 'walima',
       motif: 'arabesque' as const,
-      title: 'Muslim Valima',
+      title: 'Muslim Walima',
       subtitle: 'Gannavaram, Telangana · September 17',
       lines: [
-        'The Valima is the celebratory feast that follows the nikah, sharing our joy far and wide.',
+        'The Walima is the celebratory feast that follows the nikah, sharing our joy far and wide.',
         'A warm gathering of good food, blessings and duas for a happy, blessed married life.',
       ],
       note: 'Modest, festive attire is lovely — and hearty appetites are very welcome.',
@@ -273,7 +273,7 @@ export const travelStay = [
   {
     id: 'gannavaram',
     city: 'Gannavaram, Telangana',
-    forEvents: 'Valima · Sep 17',
+    forEvents: 'Walima · Sep 17',
     icon: 'palm' as const,
     tips: [
       'Nearest hub is Vijayawada — well connected by train and road.',
@@ -293,7 +293,7 @@ export const faqs = [
   },
   {
     q: 'What should I wear?',
-    a: 'Festive and comfortable. The wedding is a breezy beach morning, so soft fabrics work best; the Valima calls for modest, elegant attire.',
+    a: 'Festive and comfortable. The wedding is a breezy beach morning, so soft fabrics work best; the Walima calls for modest, elegant attire.',
   },
   {
     q: 'Do I need to attend all the events?',

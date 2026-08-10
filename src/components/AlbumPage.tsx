@@ -106,24 +106,6 @@ function captionFor(index: number, iso: string | null): string {
   return pool[index % pool.length]
 }
 
-// Short "X ago" label — no "Taken", no absolute date, just the distance.
-function relativeTaken(iso: string | null): string | null {
-  if (!iso) return null
-  const then = new Date(iso).getTime()
-  if (!Number.isFinite(then)) return null
-  const diffMs = Date.now() - then
-  if (diffMs < 0) return 'just now'
-  const day = 86400000
-  const days = Math.floor(diffMs / day)
-  if (days <= 0) return 'today'
-  if (days === 1) return 'yesterday'
-  if (days < 30) return `${days} days ago`
-  const months = Math.floor(days / 30)
-  if (months < 12) return `${months} month${months === 1 ? '' : 's'} ago`
-  const years = Math.floor(days / 365)
-  return `${years} year${years === 1 ? '' : 's'} ago`
-}
-
 // Repeat the available photos to fill the whole page for now. Add more images by
 // running `npm run album` (see scripts/optimize-album.mjs).
 const TILE_COUNT = 450
@@ -144,10 +126,6 @@ export function AlbumPage() {
   const activeCaption = useMemo(
     () => (activePhoto ? captionFor(active, activePhoto.takenAt) : null),
     [active, activePhoto],
-  )
-  const activeRelative = useMemo(
-    () => (activePhoto ? relativeTaken(activePhoto.takenAt) : null),
-    [activePhoto],
   )
 
   // Refs + cached centers for the mouse-following magnify (wave) effect.
@@ -363,14 +341,8 @@ export function AlbumPage() {
           </div>
         </div>
 
-        <span className="flex items-center gap-1 rounded-full border border-white/10 bg-white/5 px-3 py-1 font-body text-[11px] tabular-nums text-white/60">
-          <svg viewBox="0 0 24 24" className="h-3 w-3 text-sunset-400" fill="none" stroke="currentColor" strokeWidth="2">
-            <rect x="3" y="3" width="18" height="18" rx="2" />
-            <circle cx="8.5" cy="8.5" r="1.5" />
-            <path d="M21 15l-5-5L5 21" />
-          </svg>
-          {n} photos
-        </span>
+        {/* Right spacer so the title stays centered without the count badge. */}
+        <span aria-hidden className="w-16 sm:w-24" />
       </header>
 
       {/* Full-page mosaic of round photos — fills the viewport without scrolling */}
@@ -468,23 +440,16 @@ export function AlbumPage() {
               </svg>
             </button>
 
-            {/* Caption + date banner — solid dark backdrop so text is legible on any photo */}
-            <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-4 sm:pb-6">
-              <div className="max-w-[92vw] rounded-2xl border border-gold/25 bg-black/70 px-5 py-3 text-center shadow-[0_8px_28px_rgba(0,0,0,0.55)] backdrop-blur-md sm:px-7 sm:py-3.5">
-                {activeCaption && (
+            {/* Caption banner — solid dark backdrop so text is legible on any photo */}
+            {activeCaption && (
+              <div className="pointer-events-none absolute inset-x-0 bottom-0 flex justify-center pb-4 sm:pb-6">
+                <div className="max-w-[92vw] rounded-2xl border border-gold/25 bg-black/70 px-5 py-3 text-center shadow-[0_8px_28px_rgba(0,0,0,0.55)] backdrop-blur-md sm:px-7 sm:py-3.5">
                   <p className="bg-gradient-to-r from-gold via-sunset-400 to-coral bg-clip-text font-serif text-base italic text-transparent sm:text-lg">
                     “{activeCaption}”
                   </p>
-                )}
-                <p className="mt-1 flex items-center justify-center gap-2 font-body text-[10px] uppercase tracking-[0.3em] text-gold sm:text-[11px]">
-                  {activeRelative && <span>{activeRelative}</span>}
-                  {activeRelative && <span className="text-gold/40">·</span>}
-                  <span className="tabular-nums text-sand-100/80">
-                    {active + 1} / {n}
-                  </span>
-                </p>
+                </div>
               </div>
-            </div>
+            )}
           </motion.div>
         )}
       </AnimatePresence>

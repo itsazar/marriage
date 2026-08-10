@@ -69,7 +69,7 @@ export function downloadEventIcs({ title, start, end, description, location, fil
 export function downloadWeddingIcs() {
   downloadEventIcs({
     title: 'Lavanya & Azar — Wedding',
-    start: [2026, 9, 13, 5, 0],
+    start: [2026, 9, 13, 6, 0],
     end: [2026, 9, 13, 7, 0],
     description:
       'The sacred vows at dawn, as the sun rises over the Bay of Bengal. #LavanyaWedsAzar',

@@ -346,14 +346,37 @@ export function AlbumPage() {
       </header>
 
       {/* Full-page mosaic of round photos — fills the viewport without scrolling */}
-      <div className="min-h-0 w-full flex-1 overflow-hidden px-1.5 py-2 sm:px-3 sm:py-3">
+      <div className="relative min-h-0 w-full flex-1 overflow-hidden px-1.5 py-2 sm:px-3 sm:py-3">
+        {/* Warm heart-shaped glow behind the mosaic — bleeds through the tile gaps
+            and gently pulses like a heartbeat. */}
+        <div className="pointer-events-none absolute inset-0 z-0 flex items-center justify-center">
+          <svg
+            aria-hidden
+            viewBox="0 0 100 90"
+            preserveAspectRatio="xMidYMid meet"
+            className="h-[85%] w-auto animate-heartbeat opacity-70"
+            style={{ filter: 'blur(22px)' }}
+          >
+            <defs>
+              <radialGradient id="album-heart-glow" cx="50%" cy="45%" r="55%">
+                <stop offset="0%" stopColor="#ff8f5a" stopOpacity="1" />
+                <stop offset="55%" stopColor="#e07a5f" stopOpacity="0.85" />
+                <stop offset="100%" stopColor="#7b2d3a" stopOpacity="0" />
+              </radialGradient>
+            </defs>
+            <path
+              d="M50 84 C 18 62, 4 42, 4 24 C 4 11, 15 2, 30 2 C 40 2, 46 9, 50 18 C 54 9, 60 2, 70 2 C 85 2, 96 11, 96 24 C 96 42, 82 62, 50 84 Z"
+              fill="url(#album-heart-glow)"
+            />
+          </svg>
+        </div>
         <div
           onPointerDown={onPointerMove}
           onPointerMove={onPointerMove}
           onPointerUp={resetWave}
           onPointerLeave={resetWave}
           onPointerCancel={resetWave}
-          className="grid touch-none grid-cols-[repeat(auto-fill,minmax(28px,1fr))] gap-1 sm:grid-cols-[repeat(auto-fill,minmax(38px,1fr))] sm:gap-1.5"
+          className="relative z-10 grid touch-none grid-cols-[repeat(auto-fill,minmax(28px,1fr))] gap-1 sm:grid-cols-[repeat(auto-fill,minmax(38px,1fr))] sm:gap-1.5"
         >
           {tiles.map((photo, i) => (
             <button

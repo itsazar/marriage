@@ -23,12 +23,12 @@ export const events = [
     name: 'Reception',
     tamilName: 'வரவேற்பு',
     date: 'Saturday, September 12',
-    time: '7:00 PM – 9:00 PM',
+    time: '6:00 PM – 8:00 PM',
     blurb: 'An evening of music, feasting and celebration under the coastal stars.',
     icon: 'sparkles',
     // Calendar invite times: [year, month(1-12), day, hour(24h), minute]
-    start: [2026, 9, 12, 19, 0],
-    end: [2026, 9, 12, 21, 0],
+    start: [2026, 9, 12, 18, 0],
+    end: [2026, 9, 12, 20, 0],
     dressCode: {
       label: 'Festive & Glam',
       hint: 'Jewel tones, flowy fabrics',
@@ -189,18 +189,6 @@ export const guestbookSeed = [
   { name: 'Priya', message: "So happy for you both! Can't wait to dance at the wedding 💃" },
   { name: 'Karthik', message: '20 years in the making — worth every second. Congrats!' },
   { name: 'Meera', message: 'A beach wedding at sunrise? Iconic. See you there ❤️' },
-]
-
-// Gallery photos. Files live in `public/gallery/` and are served from the site root.
-// To swap a photo, just replace the matching file in that folder (keep the same name).
-export const gallery = [
-  { src: '/gallery/1.jpg', caption: 'Where it all began' },
-  { src: '/gallery/2.jpg', caption: 'Seeking blessings' },
-  { src: '/gallery/3.jpg', caption: 'Us, today' },
-  { src: '/gallery/4.jpg', caption: 'A rose & a smile' },
-  { src: '/gallery/5.jpg', caption: 'Just us' },
-  { src: '/gallery/6.jpg', caption: 'Coffee & us' },
-  { src: '/gallery/7.jpg', caption: 'Evenings out' },
 ]
 
 // Paste your Google Form link here when ready.

@@ -34,10 +34,10 @@ const MANIFEST_PATH = join(ALBUM_DIR, 'manifest.json')
 const VALID = new Set(['.jpg', '.jpeg', '.png', '.webp', '.avif', '.tiff', '.gif', '.heic', '.heif'])
 
 // Tunables ------------------------------------------------------------------
-const THUMB_SIZE = 400 // px longest edge for the little rounds
-const THUMB_QUALITY = 70
-const FULL_SIZE = 1800 // px longest edge for the full lightbox view
-const FULL_QUALITY = 82
+const THUMB_SIZE = 300 // px longest edge for the little rounds
+const THUMB_QUALITY = 65
+const FULL_SIZE = 1500 // px longest edge for the full lightbox view
+const FULL_QUALITY = 78
 // ---------------------------------------------------------------------------
 
 function naturalSort(a, b) {

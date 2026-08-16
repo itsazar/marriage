@@ -16,31 +16,30 @@ const fullModules = import.meta.glob('../assets/album/full/*.webp', {
   import: 'default',
 }) as Record<string, string>
 
-function sortByNumber(record: Record<string, string>) {
-  return Object.keys(record)
-    .sort((a, b) => {
-      const na = a.match(/(\d+)\.\w+$/)
-      const nb = b.match(/(\d+)\.\w+$/)
-      if (na && nb) return Number(na[1]) - Number(nb[1])
-      return a.localeCompare(b)
+function toNumberedEntries(record: Record<string, string>): Array<[number, string]> {
+  return Object.entries(record)
+    .map(([k, v]) => {
+      const m = k.match(/(\d+)\.\w+$/)
+      return [m ? Number(m[1]) : Number.NaN, v] as [number, string]
     })
-    .map((k) => record[k])
+    .filter(([n]) => Number.isFinite(n))
+    .sort((a, b) => a[0] - b[0])
 }
 
-const thumbs = sortByNumber(thumbModules)
-const fulls = sortByNumber(fullModules)
+const thumbEntries = toNumberedEntries(thumbModules)
+const fullByN = new Map<number, string>(toNumberedEntries(fullModules))
 
-// Map manifest entries by index (n is 1-based, matches the file name N.webp).
+// Map manifest entries by their number so lookups survive gaps (deleted photos).
 type ManifestEntry = { n: number; takenAt: string | null }
 const manifestByN = new Map<number, ManifestEntry>(
   (manifest as ManifestEntry[]).map((m) => [m.n, m]),
 )
 
-// Pair each thumbnail with its full-size counterpart + taken-date by position.
-const photos = thumbs.map((thumb, i) => ({
+// Pair each thumbnail with its full-size counterpart + taken-date via the file number.
+const photos = thumbEntries.map(([n, thumb]) => ({
   thumb,
-  full: fulls[i] ?? thumb,
-  takenAt: manifestByN.get(i + 1)?.takenAt ?? null,
+  full: fullByN.get(n) ?? thumb,
+  takenAt: manifestByN.get(n)?.takenAt ?? null,
 }))
 
 // Warm one-liners about the moment inside the frame. Grouped by era so an old
